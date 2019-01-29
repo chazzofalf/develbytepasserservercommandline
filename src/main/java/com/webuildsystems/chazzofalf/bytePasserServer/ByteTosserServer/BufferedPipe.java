@@ -75,6 +75,10 @@ public class BufferedPipe {
             outIn = outInTemp;
             
         }
+        else
+        {
+        	this.out = out;
+        }
     }
 
     public void start() {
