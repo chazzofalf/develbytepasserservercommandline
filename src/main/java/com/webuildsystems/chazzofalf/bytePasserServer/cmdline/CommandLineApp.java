@@ -12,16 +12,23 @@ public class CommandLineApp {
         String output = null;
         boolean inputMode = false;
         boolean outputMode = false;
+        boolean httpMode = false;
         int inputPort = -1;
         int outputPort = -1;
+        boolean allowHttp = false;
         for (String arg : args) {
-            if (!inputMode && !outputMode && arg.toLowerCase().equals("-input")) {
+            if (!inputMode && !outputMode && !httpMode && arg.toLowerCase().equals("-input")) {
                 inputMode = true;
                 continue;
             }
-            if (!inputMode && !outputMode && arg.toLowerCase().equals("-output")) {
+            if (!inputMode && !outputMode && !httpMode && arg.toLowerCase().equals("-output")) {
                 outputMode = true;
                 continue;
+            }
+            if (!inputMode && !outputMode && !httpMode && arg.toLowerCase().equals("-httpOut"))
+            {
+            	httpMode = true;
+            	continue;
             }
             if (inputMode && input == null) {
                 input = arg;
@@ -32,6 +39,13 @@ public class CommandLineApp {
                 output = arg;
                 outputMode = false;
                 continue;
+            }
+            if (httpMode && output == null)
+            {
+            	output = arg;
+            	httpMode = false;
+            	allowHttp = true;
+            	continue;
             }
             throw new RuntimeException("Invalid Parameters: Only -input and -output are allowed and only one of those are allowed.");
         }
@@ -59,6 +73,7 @@ public class CommandLineApp {
             ByteTosserServer bts = new ByteTosserServer();
             bts.setIncomingDataPort(inputPort);
             bts.setOutgoingDataPort(outputPort);
+            bts.setAllowHttp(allowHttp);
             bts.start();
             BufferedReader lineReader = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Hit Enter to close: ");

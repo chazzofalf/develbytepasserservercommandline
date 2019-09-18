@@ -10,6 +10,8 @@ import com.webuildsystems.chazzofalf.bytePasserServer.ByteTosserServer.HolderInp
 import com.webuildsystems.chazzofalf.bytePasserServer.ByteTosserServer.MultiOutputStream;
 import com.webuildsystems.chazzofalf.bytePasserServer.ByteTosserServer.PipeFinishedReadingHandler;
 
+
+
 public class ByteTosserServer
 implements PipeFinishedReadingHandler {
     private ServerSocket inputServerSocket;
@@ -34,6 +36,7 @@ implements PipeFinishedReadingHandler {
             ByteTosserServer.this.outputServerRunnableTask();
         }
     };
+	private boolean allowHttp;
 
     private MultiOutputStream getOuts() {
         if (this.outs == null) {
@@ -95,14 +98,29 @@ implements PipeFinishedReadingHandler {
     }
 
     public void start() {
-        this.runServer = true;
-        this.getPipe().start();
-        Thread input = new Thread(this.inputServerRunnable);
-        Thread output =new Thread(this.outputServerRunnable);
-        input.setDaemon(true);
-        output.setDaemon(true);
-        input.start();
-        output.start();
+    	if (!allowHttp)
+    	{
+    		this.runServer = true;
+            this.getPipe().start();
+            Thread input = new Thread(this.inputServerRunnable);
+            Thread output =new Thread(this.outputServerRunnable);
+            input.setDaemon(true);
+            output.setDaemon(true);
+            input.start();
+            output.start();
+    	}
+    	else
+    	{
+    		try
+    		{
+    			throw new Exception("Http server not implemented.");
+    		}
+    		catch (Exception e)
+    		{
+    			e.printStackTrace();
+    		}
+    		
+    	}
     }
 
     public void stop() {
@@ -119,6 +137,11 @@ implements PipeFinishedReadingHandler {
             e.printStackTrace();
         }
     }
+
+	public void setAllowHttp(boolean allowHttp) {
+		this.allowHttp = allowHttp;
+		
+	}
 
 }
 
