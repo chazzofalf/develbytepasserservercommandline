@@ -1,10 +1,13 @@
 
 package com.webuildsystems.chazzofalf.bytePasserServer.cmdline;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import com.webuildsystems.chazzofalf.bytePasserServer.ByteTosserServer.ByteTosserServer;
 
 public class CommandLineApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String input = null;
         String output = null;
         boolean inputMode = false;
@@ -57,6 +60,9 @@ public class CommandLineApp {
             bts.setIncomingDataPort(inputPort);
             bts.setOutgoingDataPort(outputPort);
             bts.start();
+            BufferedReader lineReader = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Hit Enter to close: ");
+            lineReader.readLine();
         }
     }
 }

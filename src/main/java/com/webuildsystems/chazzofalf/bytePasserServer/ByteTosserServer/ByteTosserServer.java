@@ -97,8 +97,12 @@ implements PipeFinishedReadingHandler {
     public void start() {
         this.runServer = true;
         this.getPipe().start();
-        new Thread(this.inputServerRunnable).start();
-        new Thread(this.outputServerRunnable).start();
+        Thread input = new Thread(this.inputServerRunnable);
+        Thread output =new Thread(this.outputServerRunnable);
+        input.setDaemon(true);
+        output.setDaemon(true);
+        input.start();
+        output.start();
     }
 
     public void stop() {
