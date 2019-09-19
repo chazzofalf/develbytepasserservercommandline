@@ -87,7 +87,7 @@ implements PipeFinishedReadingHandler {
             while (this.runServer) {
                 try {
                     Socket outputSocket = this.outputServerSocket.accept();
-                    this.getOuts().addOutputStream(outputSocket.getOutputStream());
+                    handleOutputSocket(outputSocket);
                 }
                 catch (IOException outputSocket) {}
             }
@@ -96,6 +96,10 @@ implements PipeFinishedReadingHandler {
             // empty catch block
         }
     }
+    
+	protected void handleOutputSocket(Socket outputSocket) throws IOException {
+		this.getOuts().addOutputStream(outputSocket.getOutputStream());
+	}
 
     public void start() {
     	if (!allowHttp)
