@@ -17,7 +17,7 @@ implements PipeFinishedReadingHandler {
     private ServerSocket inputServerSocket;
     private ServerSocket outputServerSocket;
     private int inPort = -1;
-    private int outPort = -1;
+    private int outPort = -1;   
     private BufferedPipe pipe;
     private MultiOutputStream outs;
     private HolderInputStream holder;
